@@ -20,7 +20,7 @@ struct ContentView: View {
                     .fontWeight(.bold)
             
             SliderViewRepresentation(value: $currentValue, opacity: $opacity)
-                .onChange(of: currentValue) { _, newValue in
+                .onChange(of: currentValue) {
                     let score  = computeScore()
                     opacity = Double(score) / 100
                 }
