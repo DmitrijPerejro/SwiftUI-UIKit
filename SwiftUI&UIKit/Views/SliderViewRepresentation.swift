@@ -10,13 +10,12 @@ import SwiftUI
 
 struct SliderViewRepresentation: UIViewRepresentable {
     @Binding var value: Float
-    @Binding var opacity: Double
+    let opacity: Double
     
     func makeUIView(context: Context) -> UISlider {
         let slider = UISlider()
         slider.minimumValue = 0
         slider.maximumValue = 100
-        slider.value = value
         
         slider.addTarget(
             context.coordinator,
@@ -52,5 +51,5 @@ extension SliderViewRepresentation {
 }
 
 #Preview {
-    SliderViewRepresentation(value: .constant(50), opacity: .constant(0.1))
+    SliderViewRepresentation(value: .constant(50), opacity: 0.1)
 }

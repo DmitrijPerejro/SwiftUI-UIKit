@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var targetValue = 0;
-    @State private var currentValue: Float = 0;
-    @State private var opacity: Double = 0;
-    @State private var isAlertPresented = false;
+    @State private var targetValue = Int.random(in: 0...100)
+    @State private var currentValue: Float = Float.random(in: 0...100)
+    @State private var isAlertPresented = false
     
     var body: some View {
         VStack(spacing: 10) {
@@ -19,27 +18,25 @@ struct ContentView: View {
                 + Text(" \(targetValue)")
                     .fontWeight(.bold)
             
-            SliderViewRepresentation(value: $currentValue, opacity: $opacity)
-                .onChange(of: currentValue) {
-                    let score  = computeScore()
-                    opacity = Double(score) / 100
-                }
+            HStack {
+                Text("0")
+                SliderViewRepresentation(
+                    value: $currentValue,
+                    opacity: calculateOpacity()
+                )
+                Text("100")
+            }
             
             Button("Проверь меня") {
                 isAlertPresented = true
             }
             .buttonStyle(.borderedProminent)
             .tint(.blue)
-            .fontWeight(.bold)
             
             Button("Начать заново") {
                 makeInitialState()
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.black)
-            .foregroundColor(.white)
-            .fontWeight(.bold)
-                
+            .buttonStyle(.plain)
         }
         .padding()
         .alert(isPresented: $isAlertPresented) {
@@ -48,9 +45,6 @@ struct ContentView: View {
                 message: Text(computeScore().formatted())
             )
         }
-        .onAppear {
-            makeInitialState()
-        }
     }
     
     private func makeInitialState() {
@@ -58,6 +52,10 @@ struct ContentView: View {
         currentValue = Float.random(in: 0...100)
     }
     
+    private func calculateOpacity() -> Double {
+        let score  = computeScore()
+        return Double(score) / 100
+    }
     
     private func computeScore() -> Int {
         let difference = abs(targetValue - lround(Double(currentValue)))
